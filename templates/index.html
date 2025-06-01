@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parkin Lamp Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .lamp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .lamp {
+            padding: 15px;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+        .lamp.green {
+            border-left-color: #2ecc71;
+        }
+        .lamp.red {
+            border-left-color: #e74c3c;
+        }
+        .slots {
+            font-size: 12px;
+            margin: 5px 0;
+            letter-spacing: 2px;
+        }
+        .controls {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button, select {
+            padding: 8px 12px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <select id="bulkStatus">
+            <option value="green">🟢 Set to GREEN (Vacant)</option>
+            <option value="red">🔴 Set to RED (Occupied)</option>
+        </select>
+        <button onclick="updateSelected()">Update Selected</button>
+        <button onclick="selectAll()">Select All</button>
+    </div>
+    
+    <div class="lamp-grid" id="lampGrid"></div>
+
+    <script>
+        function refreshLamps() {
+            fetch('/api/lamps')
+                .then(res => res.json())
+                .then(lamps => {
+                    let html = '';
+                    lamps.forEach(lamp => {
+                        html += `
+                            <div class="lamp ${lamp.status}">
+                                <input type="checkbox" data-id="${lamp.id}">
+                                <strong>Lamp ${lamp.id}</strong>
+                                <div class="location">${lamp.location}</div>
+                                <div class="slots">
+                                    ${lamp.slots.map(s => s ? '🟥' : '🟩').join('')}
+                                </div>
+                                Status: ${lamp.status.toUpperCase()}
+                            </div>
+                        `;
+                    });
+                    document.getElementById('lampGrid').innerHTML = html;
+                });
+        }
+
+        function updateSelected() {
+            const selected = Array.from(
+                document.querySelectorAll('input[type="checkbox"]:checked')
+            ).map(el => parseInt(el.dataset.id));
+            
+            if (selected.length === 0) {
+                alert("Please select at least one lamp!");
+                return;
+            }
+
+            const status = document.getElementById('bulkStatus').value;
+            fetch('/api/lamps/bulk_update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lamp_ids: selected, status })
+            }).then(() => refreshLamps());
+        }
+
+        function selectAll() {
+            document.querySelectorAll('input[type="checkbox"]')
+                .forEach(checkbox => checkbox.checked = true);
+        }
+
+        // Initial load + refresh every 3 seconds
+        refreshLamps();
+        setInterval(refreshLamps, 3000);
+    </script>
+</body>
+</html>

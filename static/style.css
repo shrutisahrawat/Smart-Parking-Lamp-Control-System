@@ -1,0 +1,117 @@
+/* style.css - Minimal styles for Parkin Lamp Control System */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.controls {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.controls select, .controls button {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.controls button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: #2980b9;
+}
+
+.lamp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.lamp {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    border-left: 4px solid transparent;
+}
+
+.lamp.green {
+    border-left-color: #2ecc71;
+}
+
+.lamp.red {
+    border-left-color: #e74c3c;
+}
+
+.lamp strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.location {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-bottom: 8px;
+}
+
+.status {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 3px;
+}
+
+.status.green {
+    color: #27ae60;
+    background-color: #e8f5e9;
+}
+
+.status.red {
+    color: #c0392b;
+    background-color: #ffebee;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .lamp-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
