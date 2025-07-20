@@ -9,7 +9,7 @@ A centralized FastAPI-based backend to control 100 Bluetooth-enabled lamps indic
 - Dashboard-ready architecture
 
 ## 🚀 Live Demo
-🔗(https://smart-parking-lamp-control-system-2.onrender.com)
+🔗[Demo](https://smart-parking-lamp-control-system-2.onrender.com)
 ## 🛠️ Tech Stack
 - 🐍 Python (Flask)
 - 🧠 AI-ready logic (future scope)
